@@ -167,24 +167,23 @@ window.onload = async () =>{
 
         // we want to freeze our current cursor until next key up event
         colorCursorIn(cursor); 
-        // could be last cursor 
-        if (cursor === sentence.split("").length -1 ){   
-            // update wpm content
-            const finishedTyping = true; // user got to the end 
-            [startTime, startedTyping ] = resetWpm(speedOutput, startTime, sentence.split(" ").length, finishedTyping);  
-            // game 
-            [sentence, cursor, mistakeCount, lastCharCorrect, flashingCursor, startedTyping, startTime] = await resetGame(
-                displayText, flashingCursor, errorCountOutput
-                ); 
-            return;  
-        } 
 
         if(event.key === sentence.charAt(cursor) ){
-
+                    // could be last cursor 
+            if (cursor === sentence.split("").length -1 ){   
+                // update wpm content
+                const finishedTyping = true; // user got to the end 
+                [startTime, startedTyping ] = resetWpm(speedOutput, startTime, sentence.split(" ").length, finishedTyping);  
+                // game 
+                [sentence, cursor, mistakeCount, lastCharCorrect, flashingCursor, startedTyping, startTime] = await resetGame(
+                    displayText, flashingCursor, errorCountOutput
+                    ); 
+                return;  
+            }  
             // lastCharCorrect is passed into to move cursor for coloring last char red or black 
             cursor = moveCursor(cursor,  sentence.split("").length, 1, !lastCharCorrect);  
-            lastCharCorrect = true;
-            flashingCursor = flashingCursor(cursor); 
+            lastCharCorrect = true; 
+            flashingCursor = animateFlashingCursor(cursor); 
             return;         
         }
         if (event.key === "Backspace") {  
@@ -195,17 +194,17 @@ window.onload = async () =>{
             // pass in true for lastCharCorrect param as backspacing undos all mistakes made 
             cursor = moveCursor(cursor, sentence.split("").length, -1); // decrement cursor 
             lastCharCorrect = true;
-            flashingCursor = flashingCursor(cursor); 
+            flashingCursor = animateFlashingCursor(cursor); 
             return; 
         }
         if (event.key == "Capslock" || event.key === "Shift"){
-            flashingCursor = flashingCursor(cursor);
+            flashingCursor = animateFlashingCursor(cursor);
             return; 
         }
         if (event.key !== sentence.charAt(cursor)){  
             errorCountOutput.textContent = `Errors: (${++mistakeCount})`; 
             lastCharCorrect = false;
-            flashingCursor = flashingCursor(cursor); 
+            flashingCursor = animateFlashingCursor(cursor);  
         } 
 
     }); 
