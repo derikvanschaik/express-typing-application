@@ -152,17 +152,7 @@ window.onload = async () =>{
          displayText, flashingCursor, errorCountOutput
          ); 
 
-    // cursor event handlers 
-    window.addEventListener("keyup", (event) =>{
-        
-        if (flashingCursor){ 
-            clearInterval(flashingCursor);
-            flashingCursor = null; 
-        }
-        if (cursor >= 0 && cursor < sentence.split("").length){
-            flashingCursor = animateFlashingCursor(cursor);  
-        }          
-    });  
+
     // needs to be async 
     window.addEventListener("keydown", async (event) =>{
 
@@ -194,6 +184,7 @@ window.onload = async () =>{
             // lastCharCorrect is passed into to move cursor for coloring last char red or black 
             cursor = moveCursor(cursor,  sentence.split("").length, 1, !lastCharCorrect);  
             lastCharCorrect = true;
+            flashingCursor = flashingCursor(cursor); 
             return;         
         }
         if (event.key === "Backspace") {  
@@ -203,15 +194,18 @@ window.onload = async () =>{
             }
             // pass in true for lastCharCorrect param as backspacing undos all mistakes made 
             cursor = moveCursor(cursor, sentence.split("").length, -1); // decrement cursor 
-            lastCharCorrect = true; 
+            lastCharCorrect = true;
+            flashingCursor = flashingCursor(cursor); 
             return; 
         }
-        if (event.key == "Capslock" || event.key === "Shift"){ 
+        if (event.key == "Capslock" || event.key === "Shift"){
+            flashingCursor = flashingCursor(cursor);
             return; 
         }
         if (event.key !== sentence.charAt(cursor)){  
             errorCountOutput.textContent = `Errors: (${++mistakeCount})`; 
-            lastCharCorrect = false; 
+            lastCharCorrect = false;
+            flashingCursor = flashingCursor(cursor); 
         } 
 
     }); 
