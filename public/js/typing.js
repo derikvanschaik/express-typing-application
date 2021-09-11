@@ -158,9 +158,8 @@ window.onload = async () =>{
             clearInterval(flashingCursor);
             flashingCursor = null; 
         }
-        if (cursor < sentence.split("").length){
-            flashingCursor = animateFlashingCursor(cursor);
-        }
+        flashingCursor = animateFlashingCursor(cursor);
+
           
     });  
     // needs to be async 
@@ -235,7 +234,7 @@ window.onload = async () =>{
     applyChangesButton.addEventListener("click", async () =>{  
         // hide settings 
         hideAndShowSettings(settings); 
-        // wpm 
+        // wpm  
         // update wpm content
         const finishedTyping = false; // user did not get to end 
         [startTime, startedTyping ] = resetWpm(speedOutput, startTime, sentence.split(" ").length, finishedTyping); 
