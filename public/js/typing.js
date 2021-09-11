@@ -152,7 +152,12 @@ window.onload = async () =>{
          displayText, flashingCursor, errorCountOutput
          ); 
 
-
+    // cursor event handlers 
+    window.addEventListener("keyup", (event) =>{
+        console.log("cursor is currently at: ", cursor);  
+        clearInterval(flashingCursor);
+        flashingCursor = animateFlashingCursor(cursor);          
+    });  
     // needs to be async 
     window.addEventListener("keydown", async (event) =>{
 
@@ -169,7 +174,7 @@ window.onload = async () =>{
         colorCursorIn(cursor); 
 
         if(event.key === sentence.charAt(cursor) ){
-                    // could be last cursor 
+            // could be last cursor 
             if (cursor === sentence.split("").length -1 ){   
                 // update wpm content
                 const finishedTyping = true; // user got to the end 
@@ -178,12 +183,12 @@ window.onload = async () =>{
                 [sentence, cursor, mistakeCount, lastCharCorrect, flashingCursor, startedTyping, startTime] = await resetGame(
                     displayText, flashingCursor, errorCountOutput
                     ); 
+                
                 return;  
-            }  
+            } 
             // lastCharCorrect is passed into to move cursor for coloring last char red or black 
             cursor = moveCursor(cursor,  sentence.split("").length, 1, !lastCharCorrect);  
-            lastCharCorrect = true; 
-            flashingCursor = animateFlashingCursor(cursor); 
+            lastCharCorrect = true;
             return;         
         }
         if (event.key === "Backspace") {  
@@ -193,18 +198,15 @@ window.onload = async () =>{
             }
             // pass in true for lastCharCorrect param as backspacing undos all mistakes made 
             cursor = moveCursor(cursor, sentence.split("").length, -1); // decrement cursor 
-            lastCharCorrect = true;
-            flashingCursor = animateFlashingCursor(cursor); 
+            lastCharCorrect = true; 
             return; 
         }
-        if (event.key == "Capslock" || event.key === "Shift"){
-            flashingCursor = animateFlashingCursor(cursor);
+        if (event.key == "Capslock" || event.key === "Shift"){ 
             return; 
         }
         if (event.key !== sentence.charAt(cursor)){  
             errorCountOutput.textContent = `Errors: (${++mistakeCount})`; 
-            lastCharCorrect = false;
-            flashingCursor = animateFlashingCursor(cursor);  
+            lastCharCorrect = false; 
         } 
 
     }); 
