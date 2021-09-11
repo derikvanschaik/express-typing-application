@@ -1,0 +1,16 @@
+#settings-container{
+    display:none;  
+}
+body{
+    color: #333333;
+    font-family: sans-serif;
+    max-width: 650px;
+    margin: 0 auto;
+    padding: 0 16px; 
+}
+#text-container{
+    border: 2px solid; 
+    border-radius: 1em;
+    font-size: large;
+
+} 
