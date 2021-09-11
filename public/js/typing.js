@@ -153,10 +153,22 @@ window.onload = async () =>{
          ); 
 
     // cursor event handlers 
-    window.addEventListener("keyup", (event) =>{
-        console.log("cursor is currently at: ", cursor);  
+    window.addEventListener("keyup", async (event) =>{
         clearInterval(flashingCursor);
-        flashingCursor = animateFlashingCursor(cursor);          
+        // last cursor 
+        if (cursor >= sentence.split("").length){
+            // update wpm content
+            const finishedTyping = true; // user got to the end 
+            [startTime, startedTyping ] = resetWpm(speedOutput, startTime, sentence.split(" ").length, finishedTyping);  
+            // game 
+            [sentence, cursor, mistakeCount, lastCharCorrect, flashingCursor, startedTyping, startTime] = await resetGame(
+                displayText, flashingCursor, errorCountOutput
+                ); 
+
+        }else{
+             
+            flashingCursor = animateFlashingCursor(cursor);  
+        }        
     });  
     // needs to be async 
     window.addEventListener("keydown", async (event) =>{
@@ -168,22 +180,15 @@ window.onload = async () =>{
 
         // stop current flashing of cursor 
         clearInterval(flashingCursor); 
-        flashingCursor = null;
+        flashingCursor = null; 
 
         // we want to freeze our current cursor until next key up event
         colorCursorIn(cursor); 
 
         if(event.key === sentence.charAt(cursor) ){
             // could be last cursor 
-            if (cursor === sentence.split("").length -1 ){   
-                // update wpm content
-                const finishedTyping = true; // user got to the end 
-                [startTime, startedTyping ] = resetWpm(speedOutput, startTime, sentence.split(" ").length, finishedTyping);  
-                // game 
-                [sentence, cursor, mistakeCount, lastCharCorrect, flashingCursor, startedTyping, startTime] = await resetGame(
-                    displayText, flashingCursor, errorCountOutput
-                    ); 
-                
+            if (cursor === sentence.split("").length -1 ){
+                cursor++;   // return to key up event and wait for that 
                 return;  
             } 
             // lastCharCorrect is passed into to move cursor for coloring last char red or black 
