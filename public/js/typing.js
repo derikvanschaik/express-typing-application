@@ -1,12 +1,12 @@
 // completes a fetch request for the words 
 const getRandomWords = async () => { 
-    let response = await fetch('random-words');      
+    let response = await fetch('/random-words');      
     return await response.json();    
 }
 // posts new number of word to server 
 const postNewWordNum = async (newWordNum) =>{ 
     const data = {newWordNum};   
-    let response = await fetch('random-words', { 
+    let response = await fetch('/random-words', { 
         method: 'POST', // *GET, POST, PUT, DELETE, etc. 
         headers: {
           'Content-Type': 'application/json' 
@@ -233,7 +233,8 @@ window.onload = async () =>{
     });
 
     applyChangesButton.addEventListener("click", async () =>{  
-
+        // hide settings 
+        hideAndShowSettings(settings); 
         // wpm 
         // update wpm content
         const finishedTyping = false; // user did not get to end 
