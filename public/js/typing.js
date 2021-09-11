@@ -154,13 +154,12 @@ window.onload = async () =>{
 
     // cursor event handlers 
     window.addEventListener("keyup", (event) =>{
+        setTimeout(() =>console.log("this working?"), 1000); 
         if (flashingCursor){ 
             clearInterval(flashingCursor);
             flashingCursor = null; 
         }
-        flashingCursor = animateFlashingCursor(cursor);
-
-          
+        flashingCursor = animateFlashingCursor(cursor);          
     });  
     // needs to be async 
     window.addEventListener("keydown", async (event) =>{
@@ -171,7 +170,7 @@ window.onload = async () =>{
         }
 
         // stop current flashing of cursor 
-        clearInterval(flashingCursor);
+        clearInterval(flashingCursor); 
         flashingCursor = null;
 
         // we want to freeze our current cursor until next key up event
